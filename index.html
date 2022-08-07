@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodePlayer</title>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+
+    <style type="text/css">
+        body {
+            margin-left: 0;
+            padding: 0;
+            height: 100%;
+
+        }
+
+
+        #up-bar {
+            height: 60px;
+            background-color: rgb(182, 240, 228);
+            width: 100%;
+            border-radius: 3px;
+
+        }
+
+        #logo {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 25px;
+            padding: 12px;
+            color: rgb(73, 175, 215);
+            float: left;
+
+
+        }
+
+
+        #buttons {
+            margin: 0 auto;
+            width: 50%;
+
+
+        }
+
+        .button {
+            float: left;
+            border: 1px solid gray;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            width: 100px;
+            color: rgb(26, 113, 147);
+            background-color: gainsboro;
+            height: 30px;
+        }
+
+        #html {
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+        }
+
+        #output {
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+
+        .active {
+            background-color: rgb(20, 159, 214);
+        }
+
+        .push-button {
+            background-color: skyblue;
+        }
+
+        .panel {
+            width: 24%;
+            border: 2px solid skyblue;
+            border-left: none;
+            height: 75%;
+            margin: 0 auto;
+            float: left;
+            color: skyblue;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+
+        #body-container {
+            height: 1000px;
+            margin: 0 auto;
+            background-color: skyblue;
+
+        }
+
+        iframe {
+            background-color: white;
+        }
+
+        .hidden {
+            display: none;
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div id="up-bar">
+        <div id="logo">CodePlayer</div>
+       
+        <div id="buttons">
+
+            <button class="button active" id="html">HTML</button>
+
+            <button class="button" id="css">CSS</button>
+
+            <button class="button" id="js">JavaScript</button>
+
+            <button class="button active" id="output">Output</button>
+
+        </div>
+
+    </div>
+
+    <div id="body-container">
+
+        <textarea id="htmlPanel" class="panel"></textarea>
+
+        <textarea id="cssPanel" class="panel hidden"></textarea>
+
+        <textarea id="jsPanel"  class="panel hidden"></textarea>
+
+        <iframe id="outputPanel" class="panel"></iframe>
+
+
+    </div>
+
+    <script type="text/javascript">
+
+        function update() {
+
+            $("iframe").contents().find("html").html("<html><head><style type='text/css'>" + $("#cssPanel").val() + "</style></head><body>" + $("#htmlPanel").val() + "</body></html>");
+
+            document.getElementById("outputPanel").contentWindow.eval($("#jsPanel").val());
+
+
+        }
+
+
+        //Funzione che gestisce i bottoni utilizzando la classe push-button che possiede lo stile
+        $(".button").hover(function () {
+            $(this).addClass("push-button");
+
+        }, function () {
+            $(this).removeClass("push-button");
+        })
+
+        $(".button").click(function () {
+            //Gestisce il colore quando il pulsante viene schiacciato
+            $(this).toggleClass("active");
+            $(this).removeClass("push-button");
+            //Gestisce la comparsa e scomparsa dei vari pannelli
+            var panel = $(this).attr("id") + "Panel";
+            $("#" + panel).toggleClass("hidden")
+
+
+        });
+        update();
+
+        //Rileva il testo inserito nelle textarea e applica la funzione update
+
+        $("textarea").on("change keyup paste", function () {
+            update();
+
+        });
+
+        update();
+    </script>
+
+
+
+</body>
+
+</html>
